@@ -1,0 +1,56 @@
+Fruits
+Apples, bananas,  grapes, oranges, strawberries, avocados, peaches
+
+Vegetables
+Potatoes, onions, carrots, salad greens, broccoli, peppers, tomatoes, cucumbers
+
+Canned Goods
+Soup, tuna, fruit, beans, vegetables, pasta sauce
+
+Dairy
+Butter, cheese, eggs, milk, yogurt
+
+Meat
+Chicken, beef, pork, sausage, bacon etc.
+
+Fish & Seafood
+Shrimp, crab, cod, tuna, salmon
+
+Deli
+Cheese, salami, ham, turkey
+
+Condiments & Spices
+Black pepper, oregano, cinnamon, sugar, olive oil, ketchup, mayonnaise
+
+Snacks
+Chips, pretzels, popcorn, crackers, nuts
+
+Bread & Bakery
+Bread, tortillas, pies, muffins, bagels, cookies
+
+Beverages
+Coffee, teabags, milk, juice, soda, beer, wine
+
+Pasta, Rice & Cerea
+Oats, granola, brown rice, white rice, macaroni, noodles
+
+Baking
+Flour, powdered sugar, baking powder, cocoa etc.
+
+Frozen Foods
+Pizza, fish, potatoes, ready meals, ice cream
+
+Personal Care
+Shampoo, conditioner, deodorant, toothpaste, dental floss
+
+Health Care
+Saline, band-aid, cleaning alcohol, pain killers, antacids
+
+Household & Cleaning Supplies
+Laundry detergent, dish soap, dishwashing liquid, paper towels, tissues, trash bags, aluminum foil, zip bags
+
+Baby Items
+Baby food, diapers, wet wipes, lotion
+
+Pet Care
+Pet food, kitty litter, chew toys, pet treats, pet shampoo
