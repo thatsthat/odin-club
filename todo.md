@@ -38,3 +38,7 @@ inventory/<object>/create — The form to create a new item or category (e.g. /i
 inventory/<object>/<id>/update — The form to update a specific item or category with the given \_id field value (e.g. /inventory/item/584493c1f4887f06c0e67d37/update).
 
 inventory/<object>/<id>/delete — The form to delete a specific item or category with the given \_id field value (e.g. /inventory/item/584493c1f4887f06c0e67d37/delete).
+
+1. Create
+2. Delete
+3. Update
