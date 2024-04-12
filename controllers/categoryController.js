@@ -136,10 +136,72 @@ exports.category_delete_post = asyncHandler(async (req, res, next) => {
 
 // Display Category update form on GET.
 exports.category_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Category update GET");
+  // Get category for form.
+  const category = await Category.findById(req.params.id)
+    .populate("name")
+    .exec();
+
+  if (category === null) {
+    // No results.
+    const err = new Error("Item not found");
+    err.status = 404;
+    return next(err);
+  }
+  res.render("category_form", { title: "Update Category", category: category });
 });
 
 // Handle Category update on POST.
-exports.category_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Category update POST");
-});
+exports.category_update_post = [
+  // Validate and sanitize the name field.
+  body("name", "Category name must contain at least 3 characters")
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  // Validate and sanitize the description field.
+  body("description", "Category description must contain at least 5 characters")
+    .trim()
+    .isLength({ min: 5 })
+    .escape(),
+
+  // Process request after validation and sanitization.
+  asyncHandler(async (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a category object with escaped and trimmed data.
+    const category = new Category({
+      name: req.body.name,
+      description: req.body.description,
+      _id: req.params.id, // This is required, or a new ID will be assigned!
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render the form again with sanitized values/error messages.
+      res.render("category_form", {
+        title: "Update Category",
+        category: category,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      // Data from form is valid.
+      // Check if Category with same name already exists.
+      const categoryExists = await Category.findOne({
+        name: req.body.name,
+      }).exec();
+      if (categoryExists) {
+        // Category exists, redirect to its detail page.
+        res.redirect(categoryExists.url);
+      } else {
+        const updatedCategory = await Category.findByIdAndUpdate(
+          req.params.id,
+          category,
+          {}
+        );
+
+        // New category saved. Redirect to category detail page.
+        res.redirect(updatedCategory.url);
+      }
+    }
+  }),
+];
