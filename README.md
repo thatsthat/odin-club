@@ -1,20 +1,27 @@
-# odin-inventory
+# Introduction
 
-Inventory application project
+In this project you’ll be building an exclusive clubhouse where your members can write anonymous posts. Inside the clubhouse, members can see who the author of a post is, but outside they can only see the story and wonder who wrote it.
 
-Create an Inventory management app for an imaginary store. It’s up to you what kind of business this is – you could be selling groceries, car parts, baby-toys, musical-instruments, ponies or anything!
+This will be a chance for you to use the authentication skills we learned in the last project, you will also be practicing your database skills so buckle up!
 
-Your Inventory app should have categories and items, so when the user goes to the home-page they can choose a category to view, and then get a list of every item in that category. You should include all of the CRUD methods for both items and categories, so anybody that’s visiting the site can Create, Read, Update or Delete any Item or Category.
+# Assignment
 
-1. Before you begin, take a moment to write down all of the models you’ll need and the fields that should go in them. It might help to grab a pencil and some paper and literally draw a diagram like you saw in the [MDN tutorial on databases](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose#Designing_the_LocalLibrary_models).
+1. Begin by thinking about how to set up the database models you are going to need to accomplish your goal. You will need users with full-names (first and last), usernames (you can use email for this), passwords and membership-status. Users should be able to create messages that have a title, a timestamp and some text. Your database should keep track of who created each message.
 
-   - Items should at least have: a name, description, category, price, number-in-stock and URL, though you should feel free to add more fields if it seems relevant to the type of business you’ve chosen.
-   - Categories should at least have a name, a description and a URL.
+1. Setup your database on Mongo and generate or otherwise create your project skeleton, including the models you designed in the last step.
 
-1. We’re going to follow the basic path that was demonstrated by the MDN tutorial to set up and flesh out your app, so first choose a templating language and generate the boilerplate skeleton with express-generator.
-1. Create a new Mongo Collection using the web-interface as demonstrated in the tutorial and then set up your database schemas and models.
-1. In the Library tutorial you populated your database with some sample data that was provided in a `populatedb.js` file. Actually understanding how that worked was over your head at the time, but now that you’ve finished that tutorial you’ll be able to understand how it works. [Download the `populatedb.js` file](https://raw.githubusercontent.com/hamishwillee/express-locallibrary-tutorial/master/populatedb.js) and edit it, or re-write it using the specifics of your models and then run it to populate your database!
-1. Set up the routes and controllers you’re going to need.
-1. Create all of the ‘READ’ views (i.e. view category, and view item)
-1. Create all the forms and build out the controllers you need for the rest of the CRUD actions.
-1. Deploy it and show off what you’ve done!
+1. Start with a sign-up form so you can get some users into your DB! Don’t forget to sanitize and validate the form fields and secure the passwords with bcrypt. You should add a confirmPassword field to your sign-up form and then validate it using a custom validator. Read how to do that here.
+
+1. When users sign up, they should not be automatically given membership status! What fun is a private club if just anyone can join? Add a page where members can “join the club” by entering a secret passcode. If they enter the passcode correctly then update their membership status.
+
+1. Create a login-form using passport.js like we did in the last assignment.
+
+1. When a user is logged in give them a link to “Create a new message” (but only show it if they’re logged in!). Create the new-message form.
+
+1. Display all member messages on the home page, but only show the author and date of the messages to other club-members.
+
+1. Add an optional field to the user model called Admin and then add the ability to delete messages, but only allow users who have admin == true to see the delete-button and delete messages. You’ll need to add a way to actually mark a user as an ‘admin’ so either add another secret pass-code page, or just put an “is admin” checkbox on the sign-up form.
+
+1. By this point, anyone who comes to the site should be able to see a list of all messages, with the author’s name hidden. Users should be able to sign-up and create messages, but ONLY users that are members should be able to see the author and date of each message. Finally, you should have an Admin user that is able to see everything and also has the ability to delete messages. Obviously this is a silly little app, but the things you are practicing (creating and authenticating users and giving users different abilities and permissions) are things that will be very useful to you!
+
+1. When you’re satisfied with your work, deploy your project on your chosen PaaS service and share it below!
