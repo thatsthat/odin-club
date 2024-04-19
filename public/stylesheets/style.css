@@ -1,5 +1,90 @@
-.sidebar-nav {
-  margin-top: 20px;
+body {
   padding: 0;
-  list-style: none;
+  font: 1rem "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: #bdbdbd !important;
+  background-color: #303030 !important;
+  display: flex;
+  flex-direction: column;
+}
+
+li {
+  margin: 0px;
+}
+
+.header {
+  text-align: center;
+}
+
+.message {
+  color: white;
+  background-color: #8774e1;
+  list-style-type: none;
+  margin-top: 0.5rem;
+  padding: 10px;
+  border-radius: 10px;
+  margin-left: auto;
+}
+
+.chatRoom {
+  background-color: #212121;
+  padding: 0.5rem 1rem 1rem 1rem;
+  border-radius: 20px;
+  width: 80vw;
+  max-width: 600px;
+  max-height: 400px;
+  overflow: auto;
+  align-self: center;
+}
+
+.chatMessages {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.userName {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: black;
+  text-align: left;
+  margin: -0.5rem 0rem 0.5rem -0.3rem;
+}
+
+.timeStamp {
+  font-size: 0.8rem;
+  color: black;
+  margin: 0.5rem -0.3rem -0.5rem 0rem;
+  text-align: right;
+}
+
+.messageForm {
+  display: flex;
+  flex-direction: column;
+  background-color: #212121;
+  border-radius: 20px;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem 1rem 1rem;
+  width: 80vw;
+  max-width: 600px;
+  align-self: center;
+}
+
+.userNameDialog {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
+
+.messageDialog {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.sendButton {
+  display: flex;
+  flex-direction: column;
+  max-width: 100px;
 }

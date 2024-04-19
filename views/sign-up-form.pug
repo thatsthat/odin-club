@@ -1,0 +1,15 @@
+extends layout
+
+block title
+  h1= title
+
+block content
+  form.messageForm(method="POST" action="/new")
+    div.userNameDialog
+      label User name:
+      input(placeholder='enter username', type='text', name='user', value='', onchange='{handleChange}')
+    div.messageDialog
+      label Password:
+      input(placeholder='enter password', type='text', name='message', value='', onchange='{handleChange}')
+    .sendButton 
+      input(type='submit', value='Submit')

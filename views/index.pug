@@ -1,13 +1,25 @@
 extends layout
 
-block content
-  h1= title
-  p Welcome to #[em Inventory], a very basic Express website developed as an assignment of the Odin Project.
+block title
+  h1.header= title
+  //- p Welcome to #{title}
 
-  h1 Dynamic content
-
-  p Your inventory has the following record counts:
-
-  ul
-    li #[strong Items:] !{item_count}
-    li #[strong Categories:] !{category_count}
+block content 
+  div.chatRoom
+    ul.chatMessages
+      each val, ind in messages
+        //li= 'Message ' + ind
+        ul.message
+          li.userName= val.user
+          li= val.text
+          li.timeStamp= val.added.toLocaleTimeString("en-GB", {hour: '2-digit', minute:'2-digit'})
+  div.messageForm
+    form(method="POST" action="/new")
+      div.userNameDialog
+        label User name:
+        input(placeholder='enter username', type='text', name='user', value='', onchange='{handleChange}')
+      div.messageDialog
+        label Message:
+        input(placeholder='write your message here', type='text', name='message', value='', onchange='{handleChange}')
+      .sendButton 
+        input(type='submit', value='Submit')
