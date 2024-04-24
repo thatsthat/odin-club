@@ -1,10 +1,10 @@
 extends layout
 
 block title
-  h1= 'Sign-up'
+  h1= 'User Login'
 
 block content
-  form.messageForm(method="POST" action="/sign-up")
+  form.messageForm(method="POST" action="/log-in")
     div.userNameDialog
       label User name:
       input(placeholder='enter username', type='text', name='username', value='', onchange='{handleChange}')
@@ -12,4 +12,4 @@ block content
       label Password:
       input(placeholder='enter password', type='text', name='password', value='', onchange='{handleChange}')
     .sendButton 
-      input(type='submit', value='Submit')
+      input(type='submit', value='login')

@@ -5,6 +5,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const session = require("express-session");
+const User = require("./models/user");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
@@ -47,20 +48,12 @@ app.use(
 /**
  * -------------- PASSPORT AUTHENTICATION ----------------
  */
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use((req, res, next) => {
-  console.log(req.session);
-  console.log(req.user);
-  next();
-});
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
 app.use(passport.session());
 app.use(logger("dev"));
 app.use(cookieParser());
@@ -100,6 +93,12 @@ passport.deserializeUser(async (id, done) => {
 
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
+  next();
+});
+
+app.use((req, res, next) => {
+  console.log(req.session);
+  console.log(req.user);
   next();
 });
 
