@@ -6,10 +6,10 @@ block title
 block content
   form.messageForm(method="POST" action="/log-in")
     div.userNameDialog
-      label User name:
-      input(placeholder='enter username', type='text', name='username', value='', onchange='{handleChange}')
+      label(for='username')  User name:
+      input(placeholder='enter username', type='text', name='username' value=(undefined===username ? '' : username))
     div.messageDialog
-      label Password:
-      input(placeholder='enter password', type='text', name='password', value='', onchange='{handleChange}')
-    .sendButton 
-      input(type='submit', value='login')
+      label(for='password')  Password:
+      input(placeholder='enter password', type='text', name='password' value=(undefined===password ? '' : password))
+    button.btn.btn-primary.sendButton(type='submit') Submit
+    p.errorMessage #{message}

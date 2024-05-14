@@ -2,7 +2,9 @@ var express = require("express");
 var router = express.Router();
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
+const asyncHandler = require("express-async-handler");
 const User = require("../models/user");
+const { body, validationResult } = require("express-validator");
 
 const messages = [
   {
@@ -66,14 +68,53 @@ router.post("/sign-up", async (req, res, next) => {
 
 router.get("/log-in", (req, res) => res.render("login-form"));
 
-router.post(
-  "/log-in",
+router.post("/log-in", [
+  // Validate and sanitize fields.
+  body("username", "Please provide a username and password")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("password", "Please provide a username and password")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+
+  // Process request after validation and sanitization.
+  asyncHandler(async (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+      console.log(errors.array());
+      res.render("login-form", {
+        message: errors.array()[0].msg,
+        username: req.body.username,
+        password: req.body.password,
+      });
+    } else {
+      // Data from form is valid. Proceed with authentication
+      next();
+    }
+  }),
   passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/",
+    successRedirect: "/success",
+    failureRedirect: "/failure",
     failureMessage: true,
-  })
-);
+  }),
+]);
+
+router.get("/success", (req, res) => {
+  res.send("Login OK!");
+});
+
+router.get("/failure", (req, res) => {
+  res.send("Login failed!");
+});
+
+router.get("/login-error", (req, res) => {
+  res.render("login-form", { message: "Invalid Username/Password" });
+});
 
 router.get("/log-out", (req, res, next) => {
   req.logout((err) => {

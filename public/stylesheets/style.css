@@ -88,3 +88,7 @@ li {
   flex-direction: column;
   max-width: 100px;
 }
+
+.errorMessage {
+  color: red;
+}

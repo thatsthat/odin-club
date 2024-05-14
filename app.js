@@ -12,12 +12,10 @@ const bcrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local").Strategy;
 
 var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-const inventoryRouter = require("./routes/inventory"); //Import routes for "catalog" area of site
 
 var app = express();
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // Set up mongoose connection
 const mongoose = require("mongoose");
@@ -53,7 +51,6 @@ app.use(
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-app.use(passport.initialize());
 app.use(passport.session());
 app.use(logger("dev"));
 app.use(cookieParser());
