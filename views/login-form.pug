@@ -10,6 +10,6 @@ block content
       input(placeholder='enter username', type='text', name='username' value=(undefined===username ? '' : username))
     div.messageDialog
       label(for='password')  Password:
-      input(placeholder='enter password', type='text', name='password' value=(undefined===password ? '' : password))
+      input(placeholder='enter password', type='password', name='password' value=(undefined===password ? '' : password))
     button.btn.btn-primary.sendButton(type='submit') Submit
     p.errorMessage #{message}

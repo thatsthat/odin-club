@@ -109,7 +109,9 @@ router.get("/success", (req, res) => {
 });
 
 router.get("/failure", (req, res) => {
-  res.send("Login failed!");
+  res.render("login-form", {
+    message: "wrong username / password",
+  });
 });
 
 router.get("/login-error", (req, res) => {
