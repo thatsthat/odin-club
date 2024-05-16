@@ -3,8 +3,9 @@ var router = express.Router();
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
-const User = require("../models/user");
 const { body, validationResult } = require("express-validator");
+const User = require("../models/user");
+const Message = require("../models/message");
 
 const messages = [
   {
@@ -18,7 +19,7 @@ const messages = [
     added: new Date(),
   },
   {
-    text: "orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+    text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
     user: "Pep",
     added: new Date(),
   },
@@ -36,33 +37,89 @@ router.get("/new", function (req, res, next) {
 });
 
 /* POST action for new message form. */
-router.post("/new", function (req, res, next) {
-  messages.push({
-    user: req.body.user,
-    text: req.body.message,
-    added: new Date(),
-  });
-  res.redirect("/");
-});
-
-// New user sign-up
-router.get("/sign-up", (req, res) => res.render("sign-up-form"));
-
-router.post("/sign-up", async (req, res, next) => {
+router.post("/new", async (req, res, next) => {
   try {
-    bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
-      const user = new User({
-        username: req.body.username,
-        password: hashedPassword,
-        isAdmin: true,
-      });
-      const result = await user.save();
+    const msg = new Message({
+      text: req.body.text,
+      user: res.locals.currentUser,
     });
+    const result = await msg.save();
+
     res.redirect("/");
   } catch (err) {
     return next(err);
   }
 });
+
+// New user sign-up
+router.get("/sign-up", (req, res) => res.render("sign-up-form"));
+
+router.post("/sign-up", [
+  // Validate and sanitize fields.
+  body("fullName", "Please provide a full name")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("username", "Please provide a username")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("username").custom(async (value) => {
+    const user = await User.find({ username: req.body.username }).exec();
+
+    if (user) {
+      throw new Error("Username already in use");
+    }
+  }),
+  body("password", "Please provide a password")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("passwordConfirmation").custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new Error("Password confirmation incorrect");
+    }
+  }),
+  // Process request after validation and sanitization.
+  asyncHandler(async (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+      console.log(errors.array());
+      res.render("sign-up-form", {
+        errors: errors.array,
+        username: req.body.username,
+        password: req.body.password,
+      });
+    } else {
+      // Data from form is valid. Proceed with authentication
+      next();
+    }
+  }),
+  passport.authenticate("local", {
+    successRedirect: "/success",
+    failureRedirect: "/login-error",
+    failureMessage: true,
+  }),
+  asyncHandler(async (req, res, next) => {
+    try {
+      bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
+        const user = new User({
+          username: req.body.username,
+          fullName: req.body.fullName,
+          password: hashedPassword,
+          isAdmin: true,
+        });
+        const result = await user.save();
+      });
+      res.redirect("/");
+    } catch (err) {
+      return next(err);
+    }
+  }),
+]);
 
 // User login
 
@@ -99,7 +156,7 @@ router.post("/log-in", [
   }),
   passport.authenticate("local", {
     successRedirect: "/success",
-    failureRedirect: "/failure",
+    failureRedirect: "/login-error",
     failureMessage: true,
   }),
 ]);
@@ -110,12 +167,8 @@ router.get("/success", (req, res) => {
 
 router.get("/failure", (req, res) => {
   res.render("login-form", {
-    message: "wrong username / password",
+    message: "Incorrect username / password",
   });
-});
-
-router.get("/login-error", (req, res) => {
-  res.render("login-form", { message: "Invalid Username/Password" });
 });
 
 router.get("/log-out", (req, res, next) => {

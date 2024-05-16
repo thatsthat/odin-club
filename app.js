@@ -94,7 +94,7 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  console.log(req.session);
+  console.log(res.locals.currentUser);
   //console.log(req.user);
   next();
 });
