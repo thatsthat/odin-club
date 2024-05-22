@@ -7,7 +7,7 @@ const { body, validationResult } = require("express-validator");
 const User = require("../models/user");
 const Message = require("../models/message");
 
-const messages = [
+const messages000 = [
   {
     text: "Hi there 11!",
     user: "Amandillo",
@@ -26,21 +26,17 @@ const messages = [
 ];
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
-  res.render("index", { title: "Mini Messageboard", messages: messages });
-});
-
-/* GET home page. */
-router.get("/new", function (req, res, next) {
-  res.render("form", { title: "Mini Messageboard" });
-  router.post();
+router.get("/", async (req, res, next) => {
+  const messages = await Message.find().exec();
+  console.log(messages);
+  res.render("board", { messages: messages });
 });
 
 /* POST action for new message form. */
 router.post("/new", async (req, res, next) => {
   try {
     const msg = new Message({
-      text: req.body.text,
+      text: req.body.message,
       user: res.locals.currentUser,
     });
     const result = await msg.save();
@@ -65,21 +61,25 @@ router.post("/sign-up", [
     .isLength({ min: 1 })
     .escape(),
   body("username").custom(async (value) => {
-    const user = await User.find({ username: req.body.username }).exec();
+    if (value) {
+      const user = await User.find({ username: value }).exec();
 
-    if (user) {
-      throw new Error("Username already in use");
+      if (user.length > 0) {
+        throw new Error("Username already in use");
+      }
     }
   }),
   body("password", "Please provide a password")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("passwordConfirmation").custom((value, { req }) => {
-    if (value !== req.body.password) {
-      throw new Error("Password confirmation incorrect");
-    }
-  }),
+  body("passwordConfirmation", "Password confirmation incorrect")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .custom((value, { req }) => {
+      return value === req.body.password;
+    }),
   // Process request after validation and sanitization.
   asyncHandler(async (req, res, next) => {
     // Extract the validation errors from a request.
@@ -89,7 +89,7 @@ router.post("/sign-up", [
       // There are errors. Render form again with sanitized values/error messages.
       console.log(errors.array());
       res.render("sign-up-form", {
-        errors: errors.array,
+        errors: errors.array(),
         username: req.body.username,
         password: req.body.password,
       });
@@ -97,11 +97,6 @@ router.post("/sign-up", [
       // Data from form is valid. Proceed with authentication
       next();
     }
-  }),
-  passport.authenticate("local", {
-    successRedirect: "/success",
-    failureRedirect: "/login-error",
-    failureMessage: true,
   }),
   asyncHandler(async (req, res, next) => {
     try {
@@ -155,7 +150,7 @@ router.post("/log-in", [
     }
   }),
   passport.authenticate("local", {
-    successRedirect: "/success",
+    successRedirect: "/",
     failureRedirect: "/login-error",
     failureMessage: true,
   }),
@@ -165,7 +160,7 @@ router.get("/success", (req, res) => {
   res.send("Login OK!");
 });
 
-router.get("/failure", (req, res) => {
+router.get("/login-error", (req, res) => {
   res.render("login-form", {
     message: "Incorrect username / password",
   });

@@ -1,10 +1,7 @@
 extends layout
 
-block title
-  h1= 'Sign-up'
-
 block content
-  form.messageForm(method="POST" action="/sign-up")
+  form.credentialsForm(method="POST" action="/sign-up")
     div.userNameDialog
         label Full name:
         input(placeholder='enter full name', type='text', name='fullName', value='', onchange='{handleChange}')
@@ -13,13 +10,12 @@ block content
       input(placeholder='enter username', type='text', name='username', value='', onchange='{handleChange}')
     div.messageDialog
       label Password:
-      input(placeholder='enter password', type='text', name='password', value='', onchange='{handleChange}')
+      input(placeholder='enter password', type='password', name='password', value='', onchange='{handleChange}')
     div.messageDialog
       label Password Confirmation:
-      input(placeholder='enter password confirmation', type='text', name='passwordConfirmation', value='', onchange='{handleChange}')
-    .sendButton 
-      input(type='submit', value='Submit')
-  if errors
-    ul
-      for error in errors
-        li!= error.msg
+      input(placeholder='enter password confirmation', type='password', name='passwordConfirmation', value='', onchange='{handleChange}')
+    button.btn.btn-primary.sendButton(type='submit') Submit
+    if errors
+      ul.errorMessage
+        for error in errors
+          li!= error.msg

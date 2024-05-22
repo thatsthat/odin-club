@@ -1,23 +1,15 @@
 extends layout
 
-block title
-  h1.header= title
-  //- p Welcome to #{title}
-
 block content 
   div.chatRoom
     ul.chatMessages
       each val, ind in messages
-        //li= 'Message ' + ind
         ul.message
-          li.userName= val.user
+          li.userName= val.user.fullName
           li= val.text
-          li.timeStamp= val.added.toLocaleTimeString("en-GB", {hour: '2-digit', minute:'2-digit'})
+          li.timeStamp= val.date.toLocaleTimeString("en-GB", {hour: '2-digit', minute:'2-digit'})
   div.messageForm
     form(method="POST" action="/new")
-      div.userNameDialog
-        label User name:
-        input(placeholder='enter username', type='text', name='user', value='', onchange='{handleChange}')
       div.messageDialog
         label Message:
         input(placeholder='write your message here', type='text', name='message', value='', onchange='{handleChange}')

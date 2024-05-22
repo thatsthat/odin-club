@@ -1,10 +1,7 @@
 extends layout
 
-block title
-  h1= 'User Login'
-
 block content
-  form.messageForm(method="POST" action="/log-in")
+  form.credentialsForm(method="POST" action="/log-in")
     div.userNameDialog
       label(for='username')  User name:
       input(placeholder='enter username', type='text', name='username' value=(undefined===username ? '' : username))

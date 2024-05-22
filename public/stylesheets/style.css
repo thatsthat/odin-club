@@ -7,6 +7,12 @@ body {
   flex-direction: column;
 }
 
+.sidebar-nav {
+  margin-top: 20px;
+  padding: 0;
+  list-style: none;
+}
+
 li {
   margin: 0px;
 }
@@ -34,6 +40,7 @@ li {
   max-height: 400px;
   overflow: auto;
   align-self: center;
+  margin-top: 1rem;
 }
 
 .chatMessages {
@@ -91,4 +98,20 @@ li {
 
 .errorMessage {
   color: red;
+}
+
+.credentialsForm {
+  display: flex;
+  flex-direction: column;
+  background-color: #212121;
+  border-radius: 20px;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem 1rem 1rem;
+  width: 80vw;
+  max-width: 300px;
+  align-self: center;
+}
+
+.sidebarLink {
+  margin: 0.5rem;
 }
