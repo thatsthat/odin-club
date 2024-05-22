@@ -7,6 +7,7 @@ const UserSchema = new Schema({
   password: { type: String, required: true },
   fullName: { type: String, required: true },
   isAdmin: { type: Boolean, required: true },
+  isClubMember: { type: Boolean, required: true },
 });
 
 // Export model

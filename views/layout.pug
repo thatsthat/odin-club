@@ -19,6 +19,9 @@ html(lang='en')
               if currentUser
                 li.sidebarLink
                   a(href='/log-out') Log Out
+                unless currentUser.isClubMember
+                  li.sidebarLink
+                    a(href='/join-club') Join Club
               else
                li.sidebarLink
                  a(href='/log-in') Log In

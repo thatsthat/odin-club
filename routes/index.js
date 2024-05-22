@@ -105,7 +105,8 @@ router.post("/sign-up", [
           username: req.body.username,
           fullName: req.body.fullName,
           password: hashedPassword,
-          isAdmin: true,
+          isAdmin: false,
+          isClubMember: false,
         });
         const result = await user.save();
       });
@@ -154,6 +155,65 @@ router.post("/log-in", [
     failureRedirect: "/login-error",
     failureMessage: true,
   }),
+]);
+
+router.get("/success", (req, res) => {
+  res.send("Login OK!");
+});
+
+router.get("/login-error", (req, res) => {
+  res.render("login-form", {
+    message: "Incorrect username / password",
+  });
+});
+
+router.get("/log-out", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
+
+// Club member challenge screen
+
+router.get("/join-club", (req, res) => res.render("club-form"));
+
+router.post("/join-club", [
+  // Validate and sanitize fields.
+  body("passphrase", "Please provide a passphrase")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+
+  // Process request after validation and sanitization.
+  asyncHandler(async (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+      res.render("club-form", {
+        message: errors.array()[0].msg,
+      });
+    } else {
+      // Data from form is valid. Proceed with authentication
+      next();
+    }
+  }),
+  async (req, res, next) => {
+    if (req.body.passphrase !== "theodinproject") {
+      res.render("club-form", {
+        message: "Incorrect passphrase",
+      });
+    } else {
+      const user = res.locals.currentUser;
+      user.isClubMember = true;
+      const updatedUser = await User.findByIdAndUpdate(user._id, user, {});
+      res.redirect("/");
+    }
+  },
 ]);
 
 router.get("/success", (req, res) => {

@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  form.credentialsForm(method="POST" action="/join-club")
+    div.userNameDialog
+      label(for='username')  Secret passphrase:
+      input(placeholder='enter passphrase', type='text', name='passphrase')
+    button.btn.btn-primary.sendButton(type='submit') Submit
+    p.errorMessage #{message}

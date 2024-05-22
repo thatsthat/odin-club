@@ -8,10 +8,11 @@ block content
           li.userName= val.user.fullName
           li= val.text
           li.timeStamp= val.date.toLocaleTimeString("en-GB", {hour: '2-digit', minute:'2-digit'})
-  div.messageForm
-    form(method="POST" action="/new")
-      div.messageDialog
-        label Message:
-        input(placeholder='write your message here', type='text', name='message', value='', onchange='{handleChange}')
-      .sendButton 
-        input(type='submit', value='Submit')
+  if currentUser
+    div.messageForm
+      form(method="POST" action="/new")
+        div.messageDialog
+          label Message:
+          input(placeholder='write your message here', type='text', name='message', value='', onchange='{handleChange}')
+        .sendButton 
+          input(type='submit', value='Submit')
