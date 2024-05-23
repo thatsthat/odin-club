@@ -38,6 +38,7 @@ router.post("/new", async (req, res, next) => {
     const msg = new Message({
       text: req.body.message,
       user: res.locals.currentUser,
+      name: res.locals.currentUser.fullName,
     });
     const result = await msg.save();
 

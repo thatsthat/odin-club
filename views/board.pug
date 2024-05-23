@@ -5,9 +5,11 @@ block content
     ul.chatMessages
       each val, ind in messages
         ul.message
-          li.userName= val.user.fullName
+          if currentUser.isClubMember
+            li.userName= val.name
           li= val.text
-          li.timeStamp= val.date.toLocaleTimeString("en-GB", {hour: '2-digit', minute:'2-digit'})
+          if currentUser.isClubMember
+            li.timeStamp= val.date.toLocaleTimeString("en-GB", {hour: '2-digit', minute:'2-digit'})
   if currentUser
     div.messageForm
       form(method="POST" action="/new")
