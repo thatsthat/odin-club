@@ -217,6 +217,14 @@ router.post("/join-club", [
   },
 ]);
 
+router.post(
+  "/delete",
+  asyncHandler(async (req, res, next) => {
+    await Message.findByIdAndDelete(req.body.messageID);
+    res.redirect("/");
+  })
+);
+
 router.get("/success", (req, res) => {
   res.send("Login OK!");
 });

@@ -11,7 +11,10 @@ block content
           if currentUser.isClubMember
             li.timeStamp
               div.bottomRow 
-                div.delete='X'
+                div
+                  form(method="POST" action="/delete")
+                    input(type='hidden', name='messageID', value=val._id )
+                    input.delete(type='submit', value='X')
                 div=val.date.toLocaleTimeString("en-GB", {hour: '2-digit', minute:'2-digit'})
   if currentUser
     div.messageForm

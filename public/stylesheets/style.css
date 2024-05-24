@@ -127,4 +127,8 @@ li {
   font-weight: bold;
   color: red;
   text-shadow: #000 0px 0px 1px;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
 }
