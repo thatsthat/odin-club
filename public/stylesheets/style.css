@@ -29,6 +29,7 @@ li {
   padding: 10px;
   border-radius: 10px;
   margin-left: auto;
+  min-width: 75px;
 }
 
 .chatRoom {
@@ -64,6 +65,12 @@ li {
   color: black;
   margin: 0.5rem -0.3rem -0.5rem 0rem;
   text-align: right;
+}
+
+.bottomRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .messageForm {
@@ -114,4 +121,10 @@ li {
 
 .sidebarLink {
   margin: 0.5rem;
+}
+
+.delete {
+  font-weight: bold;
+  color: red;
+  text-shadow: #000 0px 0px 1px;
 }

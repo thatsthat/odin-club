@@ -9,7 +9,10 @@ block content
             li.userName= val.name
           li= val.text
           if currentUser.isClubMember
-            li.timeStamp= val.date.toLocaleTimeString("en-GB", {hour: '2-digit', minute:'2-digit'})
+            li.timeStamp
+              div.bottomRow 
+                div.delete='X'
+                div=val.date.toLocaleTimeString("en-GB", {hour: '2-digit', minute:'2-digit'})
   if currentUser
     div.messageForm
       form(method="POST" action="/new")
