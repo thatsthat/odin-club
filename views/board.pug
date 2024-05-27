@@ -5,17 +5,20 @@ block content
     ul.chatMessages
       each val, ind in messages
         ul.message
-          if currentUser.isClubMember
-            li.userName= val.name
+          if currentUser !== undefined
+            if currentUser.isClubMember
+              li.userName= val.name
           li= val.text
-          if currentUser.isClubMember
-            li.timeStamp
-              div.bottomRow 
-                div
-                  form(method="POST" action="/delete")
-                    input(type='hidden', name='messageID', value=val._id )
-                    input.delete(type='submit', value='X')
-                div=val.date.toLocaleTimeString("en-GB", {hour: '2-digit', minute:'2-digit'})
+          if currentUser !== undefined
+            if currentUser.isClubMember
+              li.timeStamp
+                div.bottomRow
+                  if currentUser.isAdmin
+                    div
+                      form(method="POST" action="/delete")
+                        input(type='hidden', name='messageID', value=val._id )
+                        input.delete(type='submit', value='X')
+                  div=val.date.toLocaleTimeString("en-GB", {hour: '2-digit', minute:'2-digit'})
   if currentUser
     div.messageForm
       form(method="POST" action="/new")

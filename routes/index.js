@@ -101,14 +101,22 @@ router.post("/sign-up", [
   }),
   asyncHandler(async (req, res, next) => {
     try {
+      console.log(req.body.isAdmin);
       bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
+        let isAdmin = true;
+        if (req.body.isAdmin === undefined) {
+          isAdmin = false;
+        }
+
         const user = new User({
           username: req.body.username,
           fullName: req.body.fullName,
           password: hashedPassword,
-          isAdmin: false,
+          isAdmin: isAdmin,
           isClubMember: false,
         });
+        // All admin users are automatically club members
+        if (isAdmin) user.isClubMember = true;
         const result = await user.save();
       });
       res.redirect("/");

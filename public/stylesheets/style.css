@@ -97,6 +97,13 @@ li {
   margin-bottom: 1rem;
 }
 
+.adminCheckbox {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  margin-bottom: 1rem;
+}
+
 .sendButton {
   display: flex;
   flex-direction: column;

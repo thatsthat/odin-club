@@ -14,8 +14,12 @@ block content
     div.messageDialog
       label Password Confirmation:
       input(placeholder='enter password confirmation', type='password', name='passwordConfirmation', value='', onchange='{handleChange}')
+    div.adminCheckbox
+      label Admin user:
+      input(type="checkbox" name="isAdmin" style="margin-left:0.5rem")
+      
     button.btn.btn-primary.sendButton(type='submit') Submit
-    if errors
+    if error
       ul.errorMessage
         for error in errors
           li!= error.msg
