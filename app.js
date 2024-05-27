@@ -10,6 +10,8 @@ const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local").Strategy;
+const helmet = require("helmet");
+const RateLimit = require("express-rate-limit");
 
 var indexRouter = require("./routes/index");
 
@@ -43,13 +45,27 @@ app.use(
   })
 );
 
-/**
- * -------------- PASSPORT AUTHENTICATION ----------------
- */
-
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
+
+// Add helmet to the middleware chain.
+// Set CSP headers to allow our Bootstrap and Jquery to be served
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
+    },
+  })
+);
+
+// Set up rate limiter: maximum of twenty requests per minute
+const limiter = RateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 100,
+});
+// Apply rate limiter to all requests
+app.use(limiter);
 
 app.use(passport.session());
 app.use(logger("dev"));
@@ -90,12 +106,6 @@ passport.deserializeUser(async (id, done) => {
 
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
-  next();
-});
-
-app.use((req, res, next) => {
-  console.log(res.locals.currentUser);
-  //console.log(req.user);
   next();
 });
 

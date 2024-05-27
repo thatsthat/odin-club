@@ -28,7 +28,6 @@ const messages000 = [
 /* GET home page. */
 router.get("/", async (req, res, next) => {
   const messages = await Message.find().exec();
-  console.log(messages);
   res.render("board", { messages: messages });
 });
 
@@ -88,7 +87,6 @@ router.post("/sign-up", [
 
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/error messages.
-      console.log(errors.array());
       res.render("sign-up-form", {
         errors: errors.array(),
         username: req.body.username,
@@ -101,7 +99,6 @@ router.post("/sign-up", [
   }),
   asyncHandler(async (req, res, next) => {
     try {
-      console.log(req.body.isAdmin);
       bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
         let isAdmin = true;
         if (req.body.isAdmin === undefined) {
@@ -148,7 +145,6 @@ router.post("/log-in", [
 
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/error messages.
-      console.log(errors.array());
       res.render("login-form", {
         message: errors.array()[0].msg,
         username: req.body.username,
